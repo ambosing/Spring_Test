@@ -1,26 +1,36 @@
 package com.example.demo.service;
 
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.UserStatus;
+import com.example.demo.model.dto.UserCreateDto;
+import com.example.demo.model.dto.UserUpdateDto;
 import com.example.demo.repository.UserEntity;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 @TestPropertySource("classpath:test-application.properties")
 @SqlGroup({
-        @Sql(value = "/sql/user-repository-test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+        @Sql(value = "/sql/user-service-test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
         @Sql(value = "/sql/delete-all-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 })
 class UserServiceTest {
     @Autowired
     private UserService userService;
+    @MockBean
+    private JavaMailSender mailSender;
 
 
     @Test
@@ -65,5 +75,68 @@ class UserServiceTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
+
+    @Test
+    void userCreateDto_를_이용하여_유저를_생성할_수_있다() throws Exception {
+        //given
+        UserCreateDto userCreateDto = UserCreateDto.builder()
+                .email("ambosing_@naver.com")
+                .address("Gyeongi")
+                .nickname("ambosing")
+                .build();
+        BDDMockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
+
+        //when
+        UserEntity result = userService.create(userCreateDto);
+
+        //then
+        assertThat(result.getId()).isNotNull();
+        assertThat(result.getStatus()).isEqualTo(UserStatus.PENDING);
+//        assertThat(result.getCertificationCode()).isEqualTo("T.T"); 지금은 테스트를 할 수 없어 .. UUID거든..
+    }
+
+    @Test
+    void userUpdateDto_를_이용하여_유저를_수정할_수_있다() throws Exception {
+        //given
+        UserUpdateDto userUpdateDto = UserUpdateDto.builder()
+                .address("Incheon")
+                .nickname("ambosingUpdated")
+                .build();
+
+        //when
+        userService.update(1, userUpdateDto);
+
+        //then
+        UserEntity userEntity = userService.getById(1);
+        assertThat(userEntity.getId()).isNotNull();
+        assertThat(userEntity.getAddress()).isEqualTo("Incheon");
+        assertThat(userEntity.getNickname()).isEqualTo("ambosingUpdated");
+    }
+
+
+    @Test
+    void user를_로그인_시키면_마지막_로그인_시간이_변경된다() throws Exception {
+        //given
+        //when
+        userService.login(1);
+
+        //then
+        UserEntity userEntity = userService.getById(1);
+        assertThat(userEntity.getLastLoginAt()).isGreaterThan(0L);
+        //        assertThat(result.getLastLoginAt()).isEqualTo("T.T"); // FIXME
+
+    }
+
+    @Test
+    void PENDING_상태의_사용자는_인증_코드로_ACTIVE_시킬_수_있다() throws Exception {
+        //given
+        //when
+        userService.verifyEmail(2, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+
+        //then
+        UserEntity userEntity = userService.getById(2);
+        assertThat(userEntity.getStatus()).isEqualTo(UserStatus.ACTIVE);
+
+    }
 
 }
