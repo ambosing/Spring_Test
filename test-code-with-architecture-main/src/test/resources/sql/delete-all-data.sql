@@ -1,6 +1,6 @@
 delete
-from `users`
+from `posts`
 where 1;
 delete
-from `posts`
+from `users`
 where 1;
