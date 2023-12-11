@@ -1,7 +1,7 @@
-package com.example.demo.user.controller;
+package com.example.demo.common.controller;
 
-import com.example.demo.user.exception.CertificationCodeNotMatchedException;
-import com.example.demo.user.exception.ResourceNotFoundException;
+import com.example.demo.common.domain.exception.CertificationCodeNotMatchedException;
+import com.example.demo.common.domain.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

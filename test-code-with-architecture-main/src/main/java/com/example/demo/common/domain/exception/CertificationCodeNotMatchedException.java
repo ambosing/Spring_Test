@@ -1,4 +1,4 @@
-package com.example.demo.user.exception;
+package com.example.demo.common.domain.exception;
 
 public class CertificationCodeNotMatchedException extends RuntimeException {
 

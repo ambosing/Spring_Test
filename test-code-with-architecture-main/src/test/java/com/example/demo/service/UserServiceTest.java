@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.common.domain.exception.CertificationCodeNotMatchedException;
+import com.example.demo.common.domain.exception.ResourceNotFoundException;
 import com.example.demo.user.domain.UserStatus;
-import com.example.demo.user.exception.CertificationCodeNotMatchedException;
-import com.example.demo.user.exception.ResourceNotFoundException;
 import com.example.demo.user.infrastructure.UserEntity;
 import com.example.demo.user.service.UserCreate;
 import com.example.demo.user.service.UserService;
