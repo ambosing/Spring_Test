@@ -19,7 +19,5 @@ class CertificationServiceTest {
         assertThat(fakemailSender.title).isEqualTo("Please certify your email address");
         assertThat(fakemailSender.content).isEqualTo(
                 "Please click the following link to certify your email address: http://localhost:8080/api/users/1/verify?certificationCode=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
-
-
     }
 }

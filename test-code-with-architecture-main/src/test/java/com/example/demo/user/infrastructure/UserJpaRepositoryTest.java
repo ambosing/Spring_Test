@@ -25,7 +25,7 @@ public class UserJpaRepositoryTest {
         //given
 
         //when
-        Optional<UserEntity> result = userJpaRepository.findByIdAndStatus(1, UserStatus.ACTIVE);
+        Optional<UserEnity> result = userJpaRepository.findByIdAndStatus(1, UserStatus.ACTIVE);
 
         //then
         assertThat(result.isPresent()).isTrue();
@@ -36,7 +36,7 @@ public class UserJpaRepositoryTest {
         //given
 
         //when
-        Optional<UserEntity> result = userJpaRepository.findByIdAndStatus(1, UserStatus.PENDING);
+        Optional<UserEnity> result = userJpaRepository.findByIdAndStatus(1, UserStatus.PENDING);
 
         //then
 //        assertThat(result.isPresent()).isFalse();
@@ -48,7 +48,7 @@ public class UserJpaRepositoryTest {
         //given
 
         //when
-        Optional<UserEntity> result = userJpaRepository.findByEmailAndStatus("ambosing_@naver.com", UserStatus.ACTIVE);
+        Optional<UserEnity> result = userJpaRepository.findByEmailAndStatus("ambosing_@naver.com", UserStatus.ACTIVE);
 
         //then
         assertThat(result.isPresent()).isTrue();
@@ -59,7 +59,7 @@ public class UserJpaRepositoryTest {
         //given
 
         //when
-        Optional<UserEntity> result = userJpaRepository.findByEmailAndStatus("ambosing_@naver.com", UserStatus.PENDING);
+        Optional<UserEnity> result = userJpaRepository.findByEmailAndStatus("ambosing_@naver.com", UserStatus.PENDING);
 
         //then
         assertThat(result.isEmpty()).isTrue();
