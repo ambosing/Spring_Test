@@ -25,8 +25,8 @@ public class UserTest {
 
         //then
         assertThat(user.getId()).isNull();
-        assertThat(user.getEmail()).isEqualTo("ambosing_@naver.com");
-        assertThat(user.getNickname()).isEqualTo("ambosing");
+        assertThat(user.getEmail()).isEqualTo("zziwon@kakao.com");
+        assertThat(user.getNickname()).isEqualTo("zziwon");
         assertThat(user.getAddress()).isEqualTo("Pangyo");
         assertThat(user.getStatus()).isEqualTo(UserStatus.PENDING);
         assertThat(user.getCertificationCode()).isEqualTo("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
