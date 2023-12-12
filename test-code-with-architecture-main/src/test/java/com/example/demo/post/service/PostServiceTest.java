@@ -14,14 +14,14 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PostServiceTest {
-    private PostService postService;
+    private PostServiceImpl postService;
 
     @BeforeEach
     void init() {
         FakeUserRepository fakeUserRepository = new FakeUserRepository();
         FakePostRepository fakePostRepository = new FakePostRepository();
 
-        postService = PostService.builder()
+        postService = PostServiceImpl.builder()
                 .userRepository(fakeUserRepository)
                 .postRepository(fakePostRepository)
                 .clockHolder(new TestClockHolder(1678530673958L))

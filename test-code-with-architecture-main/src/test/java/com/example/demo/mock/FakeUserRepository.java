@@ -21,7 +21,7 @@ public class FakeUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(long id) {
-        return data.stream().filter(item -> item.getId().equals(id)).findFirst();
+        return data.stream().filter(item -> item.getId().equals(id)).findAny();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class FakeUserRepository implements UserRepository {
         } else {
             data.removeIf(item -> Objects.equals(item.getId(), user.getId()));
             data.add(user);
-            return null;
+            return user;
         }
     }
 }

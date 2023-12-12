@@ -13,7 +13,7 @@ class CertificationServiceTest {
         FakeMailSender fakemailSender = new FakeMailSender();
         CertificationService certificationService = new CertificationService(fakemailSender);
         //when
-        certificationService.send("ambosing_@naver.com", 1, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+        certificationService.send("ambosing_@naver.com", 1L, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
         //then
         assertThat(fakemailSender.email).isEqualTo("ambosing_@naver.com");
         assertThat(fakemailSender.title).isEqualTo("Please certify your email address");

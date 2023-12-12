@@ -1,0 +1,38 @@
+package com.example.demo.post.controller;
+
+import com.example.demo.post.domain.PostCreate;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
+public class PostCreateControllerTest {
+    //    @Autowired
+    private MockMvc mockMvc;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Test
+    void 사용자는_게시물을_작성할_수_있다() throws Exception {
+        //given
+        PostCreate postCreate = PostCreate.builder()
+                .writerId(1)
+                .content("helloworld")
+                .build();
+        //when
+        //then
+        mockMvc.perform(post("/api/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postCreate)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath(("$.content")).value("helloworld"))
+                .andExpect(jsonPath(("$.writer.id")).isNumber())
+                .andExpect(jsonPath(("$.writer.email")).value("ambosing_@naver.com"))
+                .andExpect(jsonPath("$.writer.nickname").value("ambosing"));
+    }
+}
