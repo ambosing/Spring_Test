@@ -2,10 +2,14 @@ package com.example.demo.mock;
 
 import com.example.demo.common.service.port.ClockHolder;
 import com.example.demo.common.service.port.UuidHolder;
-import com.example.demo.post.controller.port.PostService;
+import com.example.demo.post.controller.PostController;
+import com.example.demo.post.controller.PostCreateController;
+import com.example.demo.post.controller.port.PostCreateService;
+import com.example.demo.post.controller.port.PostReadService;
 import com.example.demo.post.service.PostServiceImpl;
 import com.example.demo.post.service.port.PostRepository;
 import com.example.demo.user.controller.UserController;
+import com.example.demo.user.controller.UserCreateController;
 import com.example.demo.user.controller.port.AuthenticationService;
 import com.example.demo.user.controller.port.UserCreateService;
 import com.example.demo.user.controller.port.UserReadService;
@@ -25,20 +29,26 @@ public class TestContainer {
     public final UserCreateService userCreateService;
     public final UserUpdateService userUpdateService;
     public final AuthenticationService authenticationService;
-    public final PostService postService;
+    public final PostReadService postReadService;
+    public final PostCreateService postCreateService;
     public final CertificationService certificationService;
     public final UserController userController;
+    public final UserCreateController userCreateController;
+    public final PostCreateController postCreateController;
+    public final PostController postController;
 
     @Builder
     public TestContainer(ClockHolder clockHolder, UuidHolder uuidHolder) {
         this.mailSender = new FakeMailSender();
         this.userRepository = new FakeUserRepository();
         this.postRepository = new FakePostRepository();
-        this.postService = PostServiceImpl.builder()
+        PostServiceImpl postService = PostServiceImpl.builder()
                 .postRepository(this.postRepository)
                 .userRepository(this.userRepository)
-                .clockHolder(new TestClockHolder(1678530673958L))
+                .clockHolder(clockHolder)
                 .build();
+        this.postReadService = postService;
+        this.postCreateService = postService;
 
         this.certificationService = new CertificationService(this.mailSender);
 
@@ -48,7 +58,6 @@ public class TestContainer {
                 .userRepository(this.userRepository)
                 .certificationService(this.certificationService)
                 .build();
-
         this.userReadService = userService;
         this.userCreateService = userService;
         this.userUpdateService = userService;
@@ -57,6 +66,15 @@ public class TestContainer {
                 .userReadService(userReadService)
                 .userUpdateService(userUpdateService)
                 .authenticationService(authenticationService)
+                .build();
+        this.userCreateController = UserCreateController.builder()
+                .userCreateService(userCreateService)
+                .build();
+        this.postCreateController = PostCreateController.builder()
+                .postCreateService(postCreateService)
+                .build();
+        this.postController = PostController.builder()
+                .postService(postService)
                 .build();
     }
 

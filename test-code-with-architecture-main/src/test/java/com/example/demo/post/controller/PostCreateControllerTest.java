@@ -1,38 +1,44 @@
 package com.example.demo.post.controller;
 
+import com.example.demo.mock.TestContainer;
+import com.example.demo.post.controller.response.PostResponse;
 import com.example.demo.post.domain.PostCreate;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.demo.user.service.UserCreate;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class PostCreateControllerTest {
-    //    @Autowired
-    private MockMvc mockMvc;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void 사용자는_게시물을_작성할_수_있다() throws Exception {
+    void 사용자는_게시물을_작성할_수_있다() {
         //given
+        TestContainer testContainer = TestContainer.builder()
+                .clockHolder(() -> 100L)
+                .uuidHolder(() -> "aaaa")
+                .build();
+        testContainer.userCreateService.create(UserCreate.builder()
+                .email("ambosing_@naver.com")
+                .address("Gyeongi")
+                .nickname("ambosing")
+                .build());
         PostCreate postCreate = PostCreate.builder()
                 .writerId(1)
                 .content("helloworld")
                 .build();
+
+
         //when
+        ResponseEntity<PostResponse> result = testContainer.postCreateController.createPost(postCreate);
         //then
-        mockMvc.perform(post("/api/posts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(postCreate)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath(("$.content")).value("helloworld"))
-                .andExpect(jsonPath(("$.writer.id")).isNumber())
-                .andExpect(jsonPath(("$.writer.email")).value("ambosing_@naver.com"))
-                .andExpect(jsonPath("$.writer.nickname").value("ambosing"));
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
+        assertThat(result.getBody()).isNotNull();
+        assertThat(result.getBody().getContent()).isEqualTo("helloworld");
+        assertThat(result.getBody().getWriter().getNickname()).isEqualTo("ambosing");
+        assertThat(result.getBody().getCreatedAt()).isEqualTo(100L);
+        assertThat(result.getBody().getWriter().getId()).isEqualTo(1);
     }
 }
