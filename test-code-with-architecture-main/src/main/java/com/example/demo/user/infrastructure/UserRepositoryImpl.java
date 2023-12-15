@@ -13,8 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
     private final UserJpaRepository userJpaRepository;
-
-
+    
     @Override
     public User getById(long id) {
         return findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
