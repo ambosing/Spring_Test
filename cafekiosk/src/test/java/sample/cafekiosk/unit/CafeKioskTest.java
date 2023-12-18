@@ -25,10 +25,11 @@ class CafeKioskTest {
     }
 
     @Test
-    @DisplayName("add")
+    @DisplayName("음료 1개를 추가하면 주문 목록에 담긴다.")
     void add() throws Exception {
         //given
         CafeKiosk cafeKiosk = new CafeKiosk();
+
         //when
         cafeKiosk.add(new Americano());
 
@@ -136,5 +137,22 @@ class CafeKioskTest {
         assertThatThrownBy(() -> cafeKiosk.createOrder(LocalDateTime.of(2023, 1, 17, 9, 59)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("주문 시간이 아닙니다. 관리자에게 문의하세요.");
+    }
+
+    @Test
+    @DisplayName("calculateTotalPrice")
+    void calculateTotalPrice() throws Exception {
+        //given
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+        Latte latte = new Latte();
+        //when
+        cafeKiosk.add(americano);
+        cafeKiosk.add(latte);
+
+        //then
+        int totalPrice = cafeKiosk.calculateTotalPrice();
+
+        assertThat(totalPrice).isEqualTo(8500);
     }
 }
