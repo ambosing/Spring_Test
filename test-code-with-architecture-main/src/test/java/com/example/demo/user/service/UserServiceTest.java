@@ -139,8 +139,7 @@ class UserServiceTest {
         //then
         User userEntity = userService.getById(1);
         assertThat(userEntity.getLastLoginAt()).isGreaterThan(0L);
-        assertThat(userEntity.getLastLoginAt()).isEqualTo(1678530673958L); // FIXME
-
+        assertThat(userEntity.getLastLoginAt()).isEqualTo(1678530673958L);
     }
 
     @Test
