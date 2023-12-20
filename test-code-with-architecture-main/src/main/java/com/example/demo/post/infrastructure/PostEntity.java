@@ -1,7 +1,7 @@
 package com.example.demo.post.infrastructure;
 
 import com.example.demo.post.domain.Post;
-import com.example.demo.user.infrastructure.UserEnity;
+import com.example.demo.user.infrastructure.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +27,7 @@ public class PostEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserEnity writer;
+    private UserEntity writer;
 
     public static PostEntity fromModel(Post post) {
         PostEntity postEntity = new PostEntity();
@@ -35,7 +35,7 @@ public class PostEntity {
         postEntity.content = post.getContent();
         postEntity.createdAt = post.getCreatedAt();
         postEntity.modifiedAt = post.getModifiedAt();
-        postEntity.writer = UserEnity.fromModel(post.getWriter());
+        postEntity.writer = UserEntity.fromModel(post.getWriter());
         return postEntity;
     }
 

@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users")
-public class UserEnity {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +35,8 @@ public class UserEnity {
     @Column(name = "last_login_at")
     private Long lastLoginAt;
 
-    public static UserEnity fromModel(User user) {
-        UserEnity userEntity = new UserEnity();
+    public static UserEntity fromModel(User user) {
+        UserEntity userEntity = new UserEntity();
         userEntity.id = user.getId();
         userEntity.email = user.getEmail();
         userEntity.nickname = user.getNickname();

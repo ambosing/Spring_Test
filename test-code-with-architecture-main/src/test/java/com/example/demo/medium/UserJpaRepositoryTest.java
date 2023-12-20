@@ -1,7 +1,7 @@
 package com.example.demo.medium;
 
 import com.example.demo.user.domain.UserStatus;
-import com.example.demo.user.infrastructure.UserEnity;
+import com.example.demo.user.infrastructure.UserEntity;
 import com.example.demo.user.infrastructure.UserJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class UserJpaRepositoryTest {
         //given
 
         //when
-        Optional<UserEnity> result = userJpaRepository.findByIdAndStatus(1, UserStatus.ACTIVE);
+        Optional<UserEntity> result = userJpaRepository.findByIdAndStatus(1, UserStatus.ACTIVE);
 
         //then
         assertThat(result.isPresent()).isTrue();
@@ -38,7 +38,7 @@ public class UserJpaRepositoryTest {
         //given
 
         //when
-        Optional<UserEnity> result = userJpaRepository.findByIdAndStatus(1, UserStatus.PENDING);
+        Optional<UserEntity> result = userJpaRepository.findByIdAndStatus(1, UserStatus.PENDING);
 
         //then
 //        assertThat(result.isPresent()).isFalse();
@@ -50,7 +50,7 @@ public class UserJpaRepositoryTest {
         //given
 
         //when
-        Optional<UserEnity> result = userJpaRepository.findByEmailAndStatus("ambosing_@naver.com", UserStatus.ACTIVE);
+        Optional<UserEntity> result = userJpaRepository.findByEmailAndStatus("ambosing_@naver.com", UserStatus.ACTIVE);
 
         //then
         assertThat(result.isPresent()).isTrue();
@@ -61,7 +61,7 @@ public class UserJpaRepositoryTest {
         //given
 
         //when
-        Optional<UserEnity> result = userJpaRepository.findByEmailAndStatus("ambosing_@naver.com", UserStatus.PENDING);
+        Optional<UserEntity> result = userJpaRepository.findByEmailAndStatus("ambosing_@naver.com", UserStatus.PENDING);
 
         //then
         assertThat(result.isEmpty()).isTrue();
