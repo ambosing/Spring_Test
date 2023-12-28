@@ -34,7 +34,7 @@ public class PostServiceImpl implements PostReadService, PostCreateService {
         Post post = Post.from(user, postCreate, clockHolder);
         return postRepository.save(post);
     }
-
+    
     @Override
     public Post update(long id, PostUpdate postUpdate) {
         Post post = getById(id);
