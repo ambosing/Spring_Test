@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
@@ -21,12 +22,21 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+//@ExtendWith(FindSlowTestExtension.class) // 확장팩 : 선언적인 등록 방법
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS) // 테스트 인스턴스를 클래스 당 하나만 만듬
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class) //어노테이션으로 순서를 정함
 class StudyTest {
+    int value = 0;
+
+    @RegisterExtension
+    static FindSlowTestExtension findSlowTestExtension = new FindSlowTestExtension(1000L); // 확장팩 : 프로그래밍 등록 방법
 
     @Test
+    @Order(1)
     @DisplayName("스터디 만들기")
     void create() {
+        System.out.println(value++);
         //given
         Study study = new Study(10);
         //when
@@ -41,9 +51,11 @@ class StudyTest {
     }
 
     @Test
+    @Order(2)
     @DisplayName("limit에 음수를 넣으면 에러가 발생한다")
     void limit에_음수를_넣으면_에러가_발생한다() {
         //given
+        System.out.println(value++);
         //when
         //then
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Study(-10));
@@ -159,8 +171,26 @@ class StudyTest {
         }
     }
 
+    @Test
+    @DisplayName("FindSlow 확장팩 테스트")
+// 확장팩에 있는 Slow테스트를 붙이라고 경고가 출력 됨
+    void FindSlow_확장팩_테스트() throws InterruptedException {
+        Thread.sleep(1005L);
+        System.out.println("StudyTest.FindSlow_확장팩_테스트");
+    }
+
+    @Test
+    @DisplayName("FindSlow 확장팩 테스트")
+    @SlowTest
+        // SlowTest가 있는 경우에는 출력 안됨
+    void FindSlow_확장팩_테스트2() throws InterruptedException {
+        Thread.sleep(1005L);
+        System.out.println("StudyTest.FindSlow_확장팩_테스트");
+    }
+
 
     @BeforeAll
+
     static void beforeAll() {
         System.out.println("StudyTest.beforeAll");
     }
