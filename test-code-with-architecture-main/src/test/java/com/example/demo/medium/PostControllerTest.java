@@ -40,7 +40,6 @@ public class PostControllerTest {
                 .andExpect(jsonPath(("$.writer.id")).isNumber())
                 .andExpect(jsonPath(("$.writer.email")).value("ambosing_@naver.com"))
                 .andExpect(jsonPath("$.writer.nickname").value("ambosing"));
-
     }
 
     @Test

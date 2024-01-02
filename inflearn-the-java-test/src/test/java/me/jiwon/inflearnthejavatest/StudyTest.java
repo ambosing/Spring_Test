@@ -2,6 +2,8 @@ package me.jiwon.inflearnthejavatest;
 
 import me.jiwon.inflearnthejavatest.customannotation.FastTest;
 import me.jiwon.inflearnthejavatest.customannotation.SlowTest;
+import me.jiwon.inflearnthejavatest.domain.Study;
+import me.jiwon.inflearnthejavatest.domain.StudyStatus;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -45,7 +47,6 @@ class StudyTest {
 
         assertAll(
                 () -> assertNotNull(study),
-                () -> assertTrue(study.getLimit() > 0, "스터디 최대 참석 가능 인원은 0보다 커야 한다."),
                 () -> assertEquals(StudyStatus.DRAFT, study.getStatus(), "스터디를 처음 만들면 상태값이 DRAFT여야 한다.")
         );
     }
@@ -128,7 +129,7 @@ class StudyTest {
     @ParameterizedTest(name = "{index} {displayName} message={0}")
     @ValueSource(ints = {10, 20, 40})
     void parameterizedTest2(@ConvertWith(StudyConverter.class) Study study) { // <- 이런 경우 converter 필요
-        System.out.println("study.getLimit() = " + study.getLimit());
+        System.out.println("study.getLimit() = " + study);
     }
 
     static class StudyConverter extends SimpleArgumentConverter {
