@@ -24,6 +24,7 @@ public class StudyServiceTest {
     @Mock
     StudyRepository studyRepository;
 
+
     @Test
     @DisplayName("모킹 써보기")
     void 모킹_써보기() {
